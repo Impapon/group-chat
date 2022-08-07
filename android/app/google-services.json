@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "598382793279",
+    "project_id": "fir-seipprac",
+    "storage_bucket": "fir-seipprac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598382793279:android:5caafec6adeb6c17109e8a",
+        "android_client_info": {
+          "package_name": "com.example.firebase_day36"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598382793279-te87irh51vqk2oif3sdhmvp4ju8submu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwnKgyhbJ_KVUIA6JcKMGfjxlfQ0zkxuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598382793279-te87irh51vqk2oif3sdhmvp4ju8submu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
