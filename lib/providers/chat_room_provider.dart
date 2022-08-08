@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_day36/auth/firebase_auth.dart';
-import 'package:firebase_day36/db/db_helper.dart';
-import 'package:firebase_day36/models/message_model.dart';
+import 'package:firebase_day36/db/dbhelper.dart';
 import 'package:flutter/material.dart';
+
+import '../models/message_model.dart';
 
 class ChatRoomProvider extends ChangeNotifier {
   List<MessageModel> msgList = [];

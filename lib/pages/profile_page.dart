@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_day36/auth/firebase_auth.dart';
-import 'package:firebase_day36/models/user_model.dart';
 import 'package:firebase_day36/pages/login_page.dart';
 import 'package:firebase_day36/providers/user_provider.dart';
-import 'package:firebase_day36/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import '../auth/firebase_auth.dart';
+import '../models/usermodel.dart';
+import '../widgets/main_drawer.dart';
 
 class ProfilePage extends StatefulWidget {
   static const String routeName = '/profile';
@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(title: Text('Profile Page'),
         actions: [
           IconButton(onPressed: () {
-            AuthService.logout();
+            AuthService.logOut();
             Navigator.pushReplacementNamed(context, LoginPage.routeName);
           }, icon: Icon(Icons.logout))
         ],),
@@ -58,9 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             fit: BoxFit.cover,),
                         ),
                         ElevatedButton.icon(
-                          onPressed: _getImage,
-                          icon: const Icon(Icons.camera),
-                          label: const Text('Update Image'),
+                            onPressed: _getImage,
+                            icon: const Icon(Icons.camera),
+                            label: const Text('Update Image'),
                         ),
                         const Divider(color: Colors.black, height: 1,),
                         ListTile(
@@ -72,10 +72,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   title: 'Display Name',
                                   value: userModel.name,
                                   onSaved: (value) async {
-                                    provider.updateProfile(AuthService.user!.uid,
-                                        {'name' : value});
-                                    await AuthService.updateDisplayName(value);
-                                  });
+                                provider.updateProfile(AuthService.user!.uid,
+                                    {'name' : value});
+                                await AuthService.updateDisplayName(value);
+                              });
                             },
                           ),
                         ),
@@ -150,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: TextField(
           controller: txtController,
           decoration: InputDecoration(
-              hintText: 'Enter $title'
+            hintText: 'Enter $title'
           ),
         ),
       ),

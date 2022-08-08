@@ -17,24 +17,24 @@ class UserModel {
       this.deviceToken});
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'uid': uid,
-      'name': name,
-      'email': email,
-      'mobile': mobile,
-      'image': image,
-      "deviceToken": deviceToken,
-      'available': available
+    return <String, dynamic> {
+      'uid' : uid,
+      'name' : name,
+      'mobile' : mobile,
+      'email' : email,
+      'image' : image,
+      'deviceToken' : deviceToken,
+      'available' : available,
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
-        uid: map['uid'],
-        name: map['name'],
-        email: map['email'],
-        mobile: map['mobile'],
-        image: map['image'],
-        deviceToken: map['deviceToken'],
-        available: map['available'],
-      );
+    uid: map['uid'],
+    name: map['name'],
+    mobile: map['mobile'],
+    email: map['email'],
+    image: map['image'],
+    deviceToken: map['deviceToken'],
+    available: map['available'],
+  );
 }

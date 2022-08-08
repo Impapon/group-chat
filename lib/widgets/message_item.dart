@@ -1,7 +1,8 @@
+
 import 'package:firebase_day36/auth/firebase_auth.dart';
 import 'package:firebase_day36/models/message_model.dart';
-import 'package:firebase_day36/utils/helper_function.dart';
 import 'package:flutter/material.dart';
+import '../utils/helper_functions.dart';
 
 class MessageItem extends StatelessWidget {
   final MessageModel messageModel;
@@ -26,4 +27,3 @@ class MessageItem extends StatelessWidget {
     );
   }
 }
-

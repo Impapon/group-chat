@@ -1,4 +1,5 @@
-import 'package:firebase_day36/models/user_model.dart';
+
+import 'package:firebase_day36/models/usermodel.dart';
 import 'package:flutter/material.dart';
 
 class UserItem extends StatelessWidget {
@@ -9,23 +10,30 @@ class UserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: ClipOval(
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(25),
         child: Card(
           child: userModel.image == null
               ? Image.asset(
-                  'images/man.jpeg',
+                  'images/person.png',
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
                 )
-              : Image.network(userModel.image!),
+              : Image.network(
+                  userModel.image!,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
         ),
       ),
       title: Text(userModel.name ?? userModel.email),
       subtitle: Text(
-        userModel.available ? "Online" : "Offline",
-        style:
-            TextStyle(color: userModel.available ? Colors.amber : Colors.grey),
+        userModel.available ? 'Online' : 'Offline',
+        style: TextStyle(
+          color: userModel.available ? Colors.amber : Colors.grey
+        ),
       ),
     );
   }

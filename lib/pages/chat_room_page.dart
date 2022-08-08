@@ -1,11 +1,13 @@
+
 import 'package:firebase_day36/providers/chat_room_provider.dart';
 import 'package:firebase_day36/widgets/main_drawer.dart';
-import 'package:firebase_day36/widgets/message_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/message_item.dart';
+
 class ChatRoomPage extends StatefulWidget {
-  static const routeName = '/chat';
+  static const String routeName = '/chat_room';
 
   const ChatRoomPage({Key? key}) : super(key: key);
 
@@ -15,11 +17,11 @@ class ChatRoomPage extends StatefulWidget {
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
   bool isFirst = true;
-  final textController = TextEditingController();
+  final txtController = TextEditingController();
 
   @override
   void dispose() {
-    textController.dispose();
+    txtController.dispose();
     super.dispose();
   }
 
@@ -36,9 +38,11 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       drawer: const MainDrawer(),
       appBar: AppBar(
-        title: const Text("Chat Room"),
+        elevation: 0,
+        title: const Text('Chat Room'),
       ),
       body: Consumer<ChatRoomProvider>(
         builder: (context, provider, _) => Column(
@@ -46,33 +50,43 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
             Expanded(
               child: ListView.builder(
                 reverse: true,
-                  itemCount: provider.msgList.length,
-                  itemBuilder: (context, index) {
-                    final messageModel = provider.msgList[index];
-                    return MessageItem(messageModel: messageModel);
-                  }),
+                itemCount: provider.msgList.length,
+                itemBuilder: (context, index) {
+                  final messageModel = provider.msgList[index];
+                  return MessageItem(messageModel: messageModel);
+                },
+              ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: textController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(24)),
-                        hintText: "Type your message here"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      //keyboardType: TextInputType.text,
+                      controller: txtController,
+                      decoration: InputDecoration(
+                        filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          hintText: 'Type your message here'),
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    if (textController.text.isEmpty) return;
-                    provider.addMessage(textController.text);
-                    textController.clear();
-                  },
-                  icon: Icon(Icons.send),
-                  color: Theme.of(context).primaryColor,
-                )
-              ],
+                  IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      if(txtController.text.isEmpty) return;
+                      provider.addMessage(txtController.text);
+                      txtController.clear();
+                    },
+                  )
+                ],
+              ),
             ),
           ],
         ),

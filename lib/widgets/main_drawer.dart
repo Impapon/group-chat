@@ -1,11 +1,13 @@
+
 import 'package:firebase_day36/auth/firebase_auth.dart';
-import 'package:firebase_day36/pages/chat_room_page.dart';
 import 'package:firebase_day36/pages/launcher_page.dart';
 import 'package:firebase_day36/pages/profile_page.dart';
-import 'package:firebase_day36/pages/user_list_page.dart';
 import 'package:firebase_day36/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../pages/chat_room_page.dart';
+import '../pages/user_list_page.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -20,34 +22,27 @@ class MainDrawer extends StatelessWidget {
             color: Colors.blue.shade700,
           ),
           ListTile(
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, ProfilePage.routeName),
+            onTap: () => Navigator.pushReplacementNamed(context, ProfilePage.routeName),
             leading: const Icon(Icons.person),
             title: const Text('My Profile'),
           ),
           ListTile(
-            onTap: () async {
-              await Provider.of<UserProvider>(context, listen: false)
-                  .updateProfile(AuthService.user!.uid, {'available': false});
-
-              AuthService.logout().then((value) =>
-                  Navigator.pushReplacementNamed(
-                      context, UserListPage.routeName));
-            },
+            onTap: () => Navigator.pushReplacementNamed(context, UserListPage.routeName),
             leading: const Icon(Icons.group),
             title: const Text('User List'),
           ),
           ListTile(
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, ChatRoomPage.routeName),
+            onTap: () => Navigator.pushReplacementNamed(context, ChatRoomPage.routeName),
             leading: const Icon(Icons.chat),
             title: const Text('Chat Room'),
           ),
           ListTile(
-            onTap: () {
-              AuthService.logout().then((value) =>
-                  Navigator.pushReplacementNamed(
-                      context, LauncherPage.routeName));
+            onTap: () async {
+              await Provider.of<UserProvider>(context, listen: false)
+                  .updateProfile(AuthService.user!.uid, {'available' : false});
+              AuthService.logOut()
+                  .then((value) =>
+                  Navigator.pushReplacementNamed(context, LauncherPage.routeName));
             },
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),

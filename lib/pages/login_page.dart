@@ -1,13 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_day36/auth/firebase_auth.dart';
-import 'package:firebase_day36/models/user_model.dart';
-import 'package:firebase_day36/pages/profile_page.dart';
+import 'package:firebase_day36/models/usermodel.dart';
+import 'package:firebase_day36/pages/launcher_page.dart';
 import 'package:firebase_day36/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../auth/firebase_auth.dart';
+
 class LoginPage extends StatefulWidget {
-  static const routeName = '/login';
+  static const String routeName = '/login';
 
   const LoginPage({Key? key}) : super(key: key);
 
@@ -17,15 +18,16 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool isLogin = true, isObscureText = true;
+  final passController = TextEditingController();
+  bool isLogin = true,
+      isObscureText = true;
   final formKey = GlobalKey<FormState>();
   String errMsg = '';
 
   @override
   void dispose() {
     emailController.dispose();
-    passwordController.dispose();
+    passController.dispose();
     super.dispose();
   }
 
@@ -36,68 +38,89 @@ class _LoginPageState extends State<LoginPage> {
         child: Form(
           key: formKey,
           child: ListView(
+            padding: const EdgeInsets.all(20),
+            shrinkWrap: true,
             children: [
               TextFormField(
                 controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                    hintText: 'Email Address',
+                    prefixIcon: Icon(Icons.email),
+                    filled: true),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field must not be empty';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                obscureText: isObscureText,
+                controller: passController,
                 decoration: InputDecoration(
-                  labelText: "Email",
-                  prefixIcon: Icon(Icons.email),
+                  hintText: 'Password',
+                  prefixIcon: Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                        isObscureText ? Icons.visibility_off : Icons
+                            .visibility),
+                    onPressed: () =>
+                        setState(() {
+                          isObscureText = !isObscureText;
+                        }),
+                  ),
+                  filled: true,
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "This filed cant be empty";
-                  } else {
-                    return null;
+                    return 'This field must not be empty';
                   }
+                  return null;
                 },
               ),
-              TextFormField(
-                controller: passwordController,
-                obscureText: isObscureText,
-                decoration: InputDecoration(
-                    labelText: "Password",
-                    prefixIcon: Icon(Icons.password),
-                    suffix: IconButton(
-                      icon: Icon(isObscureText
-                          ? Icons.visibility_off
-                          : Icons.visibility),
-                      onPressed: () {
-                        setState(() {
-                          isObscureText = !isObscureText;
-                        });
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 16,
+              const SizedBox(
+                height: 20,
               ),
               ElevatedButton(
-                  onPressed: () {
-                    isLogin = true;
-                    authenticate();
-                  },
-                  child: Text("Login")),
+                onPressed: () {
+                  isLogin = true;
+                  authenticate();
+                },
+                child: const Text('LOGIN'),
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("New User ? "),
+                  const Text('New User?'),
                   TextButton(
-                      onPressed: () {
-                        isLogin = false;
-                        authenticate();
-                      },
-                      child: Text("Regiter here User ? ")),
+                    onPressed: () {
+                      isLogin = false;
+                      authenticate();
+                    },
+                    child: const Text('Register Here'),
+                  )
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Forget Password ? "),
-                  TextButton(onPressed: () {}, child: Text("Reset?")),
+                  const Text('Forgot Password?'),
+                  TextButton(
+                    onPressed: () {
+
+                    },
+                    child: const Text('Click Here'),
+                  )
                 ],
               ),
-              SizedBox(
-                height: 16,
-              ),
-              Text(errMsg),
+              const SizedBox(height: 10,),
+              Text(errMsg, style: TextStyle(color: Theme
+                  .of(context)
+                  .errorColor),)
             ],
           ),
         ),
@@ -110,28 +133,32 @@ class _LoginPageState extends State<LoginPage> {
       bool status;
       try {
         if (isLogin) {
-          status = await AuthService.login(
-              emailController.text, passwordController.text);
-        } else {
-          status = await AuthService.register(
-              emailController.text, passwordController.text);
+          status =
+          await AuthService.login(emailController.text, passController.text);
+        }
+        else {
+          status =
+          await AuthService.register(emailController.text, passController.text);
           final userModel = UserModel(
-              uid: AuthService.user!.uid, email: AuthService.user!.email!);
-          if (mounted) {
-            await Provider.of<UserProvider>(context, listen: false)
+            uid: AuthService.user!.uid,
+            email: AuthService.user!.email!,);
+          if(mounted) {
+            await Provider
+                .of<UserProvider>(context, listen: false)
                 .addUser(userModel);
-            Navigator.pushReplacementNamed(context, ProfilePage.routeName);
+            Navigator.pushReplacementNamed(context, LauncherPage.routeName);
           }
         }
         if (status) {
-          Navigator.pushReplacementNamed(context, ProfilePage.routeName);
+          Navigator.pushReplacementNamed(context, LauncherPage.routeName);
         }
-      } on FirebaseAuthException catch (error) {
-        print(error);
+      } on FirebaseAuthException catch (e) {
         setState(() {
-          errMsg = error.message!;
+          errMsg = e.message!;
         });
       }
     }
   }
+
+
 }
